@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Patient Portal — Documents</title>
+  <link rel="stylesheet" href="/frontend/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <h1>Patient Portal</h1>
+      <p class="muted">A secure place to upload and manage your medical documents (PDF).</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h2>What this portal does</h2>
+      <p>
+        This patient portal lets a patient upload and manage medical documents such as
+        prescriptions, test results, and referral notes.
+      </p>
+      <ul>
+        <li><strong>Upload a PDF file</strong></li>
+        <li><strong>View all uploaded documents</strong></li>
+        <li><strong>Download any document</strong></li>
+        <li><strong>Delete a document</strong></li>
+      </ul>
+    </section>
+
+    <section class="card upload-card">
+      <div class="upload-left">
+        <div id="dropzone" class="dropzone">
+          <p>Drag & drop a PDF here — or</p>
+          <label class="btn filebtn">
+            Choose file
+            <input id="fileInput" type="file" accept="application/pdf" />
+          </label>
+          <p class="muted small">Max file size 10 MB. PDF only.</p>
+        </div>
+        <div class="progress-wrap" style="display:none;">
+          <div id="progressBar" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="upload-right">
+        <h3>Your Uploaded Documents</h3>
+        <div id="list" class="docs-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <small>Built for the Full Stack Developer Assessment</small>
+    </div>
+  </footer>
+
+  <script src="/frontend/app.js"></script>
+</body>
+</html>
