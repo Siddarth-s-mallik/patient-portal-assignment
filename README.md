@@ -1,12 +1,11 @@
-# Patient Portal – Full Stack Assignment
+# 🏥 Patient Portal – Full Stack Assignment
 
-This project implements a **Patient Portal** where a user can upload, view, download, and delete **PDF medical documents** such as prescriptions, test results or referral notes.
-
-It meets all assignment requirements using a **frontend + backend + SQLite database**.
+A mini healthcare document portal where users can upload, view, download, and delete their medical documents (PDFs).  
+This project includes a complete **frontend**, **backend**, **database**, and **file handling** system.
 
 ---
 
-# 📁 Folder Structure
+# 📁 Project Structure
 
 ```
 patient-portal-assignment/
@@ -19,212 +18,167 @@ patient-portal-assignment/
 ├── backend/
 │   ├── index.js
 │   ├── package.json
-│   └── database.sqlite  (ignored in git)
+│   └── database.sqlite (auto-created)
 │
-├── uploads/  (ignored in git)
-├── design.md or design.pdf
-├── README.md
-└── .gitignore
+├── uploads/ (auto-created, stores uploaded PDFs)
+├── design.md
+└── README.md
 ```
 
 ---
 
-# 🚀 1. Project Overview
+# 🚀 How to Run the Project Locally
 
-This application allows users to:
-
-- Upload **PDF files**
-- View a list of uploaded files
-- Download documents
-- Delete documents
-- Store files locally in `uploads/`
-- Store metadata (filename, size, created_at) in a SQLite database
-
-**Frontend:** HTML, CSS, JavaScript  
-**Backend:** Node.js + Express  
-**Database:** SQLite  
-
----
-
-# ⚙️ 2. How to Run Locally
-
-### **Step 1 — Install backend dependencies**
-```
+### **1️⃣ Install backend dependencies**
+```bash
 cd backend
 npm install
 ```
 
-### **Step 2 — Start the backend server**
-```
+### **2️⃣ Start the server**
+```bash
 node index.js
 ```
 
-You should see:
+If successful, you will see:
 ```
 Server running on http://localhost:4000
 ```
 
-### **Step 3 — Open frontend**
-Go to:
+### **3️⃣ Open the application**
+
+In your browser, open:
 
 ```
-http://localhost:4000/frontend/index.html
+http://localhost:4000/
 ```
+
+🎉 The frontend UI loads automatically from the backend.
 
 ---
 
-# 📡 3. API Endpoints
+# 📄 Features
 
-## 🔹 Upload PDF  
-**POST** `/documents/upload`
+### ✔ Upload PDF files  
+Only PDFs are allowed (max 10 MB)
 
-Example:
-```
-curl -X POST http://localhost:4000/documents/upload -F "file=@C:/Users/YourName/example.pdf"
-```
+### ✔ View uploaded documents  
+Displays filename, file size, and upload time
 
-Response:
-```json
-{
-  "success": true,
-  "document": {
-    "id": 1,
-    "filename": "example.pdf",
-    "filepath": "170000_example.pdf",
-    "filesize": 23456,
-    "created_at": "2025-12-09T10:14:05Z"
-  }
-}
-```
+### ✔ Download documents  
+Files are streamed from the backend
+
+### ✔ Delete documents  
+Removes file from disk + metadata from database
+
+### ✔ Frontend built with animations  
+Modern UI using HTML, CSS, JS
+
+### ✔ Backend built with Express + Multer  
+Handles file uploads and routing
+
+### ✔ Database: SQLite  
+Stores metadata locally inside backend folder
 
 ---
 
-## 🔹 List all documents  
-**GET** `/documents`
+# 📡 API Specification
 
-Example:
+| Method | Endpoint            | Description                        |
+|--------|----------------------|------------------------------------|
+| POST   | `/documents/upload`  | Upload a PDF file                  |
+| GET    | `/documents`         | List all documents                 |
+| GET    | `/documents/:id`     | Download a file                    |
+| DELETE | `/documents/:id`     | Delete a file and its metadata     |
+
+
+### Example: Upload a PDF
+```bash
+curl -X POST http://localhost:4000/documents/upload \
+     -F "file=@sample.pdf"
 ```
+
+### Example: Get all PDFs
+```bash
 curl http://localhost:4000/documents
 ```
 
-Response:
-```json
-[
-  {
-    "id": 1,
-    "filename": "example.pdf",
-    "filesize": 23456,
-    "created_at": "2025-12-09T10:14:05Z"
-  }
-]
-```
-
----
-
-## 🔹 Download a document  
-**GET** `/documents/:id`
-
-Example:
-```
+### Example: Download a PDF
+```bash
 curl -OJ http://localhost:4000/documents/1
 ```
 
----
-
-## 🔹 Delete a document  
-**DELETE** `/documents/:id`
-
-Example:
-```
+### Example: Delete a PDF
+```bash
 curl -X DELETE http://localhost:4000/documents/1
 ```
 
-Response:
-```json
-{"success": true}
-```
+---
+
+# 🗄 Database Schema (SQLite)
+
+Table: **documents**
+
+| Column     | Type     | Description                  |
+|------------|----------|------------------------------|
+| id         | integer  | Primary key                  |
+| filename   | text     | Original file name           |
+| filepath   | text     | Actual stored file name      |
+| filesize   | integer  | Size in bytes                |
+| created_at | text     | Upload timestamp             |
 
 ---
 
-# 🧠 4. Architecture Overview
+# 🧱 Tech Stack
 
-### System Flow
-1. User interacts with **frontend UI**.
-2. Frontend communicates with **Express backend**.
-3. Backend:
-   - Stores uploaded files inside **uploads/**
-   - Saves metadata (filename, size, created_at) in **SQLite database**
-4. Frontend fetches document list via API.
-5. Download requests stream the file to the user.
-6. Delete requests remove files + DB entry.
+### **Frontend**
+- HTML  
+- CSS (modern animations)
+- JavaScript (fetch API)
 
----
+### **Backend**
+- Node.js  
+- Express.js  
+- Multer (file upload handling)
 
-# 🔄 5. Data Flow Description
-
-## **When uploading a PDF**
-1. User selects or drags a file into the frontend.
-2. Frontend sends it to `/documents/upload` via FormData.
-3. Backend (multer) validates type & size.
-4. File saved in `uploads/` folder.
-5. Metadata inserted into SQLite DB.
-6. Frontend refreshes the list.
-
-## **When downloading**
-1. User clicks **Download**.
-2. Frontend sends GET `/documents/:id`.
-3. Backend finds file path from DB.
-4. Backend streams the file to browser.
+### **Database**
+- SQLite (file-based, lightweight)
 
 ---
 
-# 📘 6. Assumptions
+# 🔄 How the System Works (Data Flow)
 
-- Only **PDFs** allowed  
-- Max file size: **10 MB**  
-- Single user (no login required)  
-- SQLite is sufficient for assignment  
-- Local file storage acceptable  
-- No cloud / no scaling required for demo  
+### **1️⃣ File Upload**
+1. User selects PDF  
+2. Frontend sends file → `/documents/upload`  
+3. Backend (Multer) validates & stores file in `uploads/`  
+4. Metadata stored in SQLite  
+5. UI updates the file list  
 
----
+### **2️⃣ File Download**
+1. User clicks download  
+2. Frontend requests `/documents/:id`  
+3. Backend streams the file to browser  
 
-# 📈 7. Scaling to 1,000 Users
-
-If required for production:
-
-- Move from SQLite → PostgreSQL  
-- Use AWS S3 for file storage  
-- Add authentication + `user_id` column  
-- Deploy backend with load balancers  
-- Use Redis caching  
-- Add logging, monitoring, rate limiting  
+### **3️⃣ File Delete**
+1. User clicks delete  
+2. Backend removes file from disk  
+3. Metadata removed from SQLite  
 
 ---
 
-# 🎨 8. Features Completed
-
-## **Frontend**
-✔ PDF upload (with validation)  
-✔ File listing  
-✔ Download button  
-✔ Delete button  
-✔ Clean UI  
-
-## **Backend**
-✔ File upload with multer  
-✔ Save to `uploads/`  
-✔ Metadata saved to SQLite  
-✔ APIs for upload/list/download/delete  
+# 🧪 Assumptions
+- Only PDF uploads allowed  
+- Max file size = **10 MB**  
+- Single user mode (no authentication)  
+- Local storage is acceptable for assignment  
+- SQLite is suitable for local development  
 
 ---
 
-# 📎 9. Contact
+# 👨‍💻 Author
+**Siddarth S Mallik**  
+**📧 Email: **siddarthmallik1221@gmail.com**
 
-Prepared by: Siddarth S Mallik  
-Email: **siddarthsmalliksiddusmallik@gmail.com**  
-Phone: **+91 7483780500**
-
-
-
+---
 
