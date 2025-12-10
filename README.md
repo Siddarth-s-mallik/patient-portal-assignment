@@ -178,7 +178,7 @@ Table: **documents**
 
 # 👨‍💻 Author
 **Siddarth S Mallik**  
-**📧 Email: **siddarthmallik1221@gmail.com**
+**📧 Email: **siddarthsmalliksiddusmallik@gmail.com**
 
 ---
 
